@@ -17,7 +17,7 @@
         display: inline-block;
         width:60%;
         // height: 100px;
-        min-height: 1251px;
+        min-height: 1080px;
         background-color:aquamarine;
         float: left;
     }

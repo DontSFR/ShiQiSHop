@@ -22,8 +22,8 @@
                     香水
                 </router-link>
             </MenuItem>
-            <MenuItem name="center" >
-                <router-link to='/center' class="a-link personer">
+            <MenuItem name="brand" >
+                <router-link to='/brand' class="a-link personer">
                     品牌中心
                 </router-link>
             </MenuItem>
@@ -77,8 +77,12 @@ export default {
                     name:'special'
                 },
                 {
-                    path: '/center',
-                    name:'center'
+                    path: '/special',
+                    name:'special'
+                },
+                {
+                    path: '/brand',
+                    name:'brand'
                 }
             ]
         }

@@ -53,7 +53,19 @@ const routes =  [
         path:'news',
         name:'news',
         component: r => require.ensure([], () => r(require('../view/news/index.vue')), 'news')
-      }
+      },
+      {
+        path:'brand',
+        name:'brand',
+        component: r => require.ensure([], () => r(require('../view/brand/index.vue')), 'news')
+      },
+      {
+        path:'testDetails',
+        name:'testDetails',
+        component: r => require.ensure([], () => r(require('../view/testDetails/index.vue')), 'testDetails')
+      },
+      
+      
     ]
   },
   {

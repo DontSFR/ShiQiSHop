@@ -18,7 +18,7 @@ import moreRecommend from "@/components/moreRecommend/index.vue";
 }
 .left-content{
     width: 65%;
-    min-height: 1251px;
+    min-height: 1080px;
     // height: 100%;
     float: left;
     background: url("~@/assets/index/center_bg_1.png") repeat-y;

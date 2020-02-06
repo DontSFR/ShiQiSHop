@@ -53,6 +53,7 @@ export default {
                 }).then(res => {
                     if(res.code===200){
                         this.$cookies.set('userId', res.res.userId)
+                       
                         this.$router.push({path: '/index'})//登录成功后跳转到指定页面
                     }else{
                         this.$Notice.error({

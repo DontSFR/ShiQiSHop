@@ -20,7 +20,7 @@ import mySpecial from "@/components/moreSpecial/index.vue";
 .left-content{
       width:@win-width-xmin;
     margin: 0 auto;
-    min-height: 1251px;
+    min-height: 1080px;
     // height: 100%;
     // float: left;
     // background: url("~@/assets/index/center_bg_1.png") repeat-y;

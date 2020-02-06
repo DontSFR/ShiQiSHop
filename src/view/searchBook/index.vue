@@ -107,8 +107,8 @@ export default {
 }
 .left-content{
     width: 65%;
-    height: 1251px;
-    // min-height:1251px;
+    height: 1080px;
+    // min-height:1080px;
     float: left;
     background: url("~@/assets/index/center_bg_1.png") repeat-y;
     background-size:100% 100%;

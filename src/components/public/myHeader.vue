@@ -1,7 +1,7 @@
 <template>
     <div>
         <header>
-            <div class="logo"><a><img src="~@/assets/logo.png" alt="" title="" border="0" /></a></div>
+            <div class="logo"><a><img src="~@/assets/header/logo.png" alt="" title="" border="0" /></a></div>
         </header>        
     </div>
 </template>
@@ -13,6 +13,7 @@
         margin: 0 auto; 
         -moz-background-size:100% 100%; 
         background-size:100% 100%;
+        background-color: rgb(237, 232, 229);
         .logo{
             // padding:0;
             width:@win-width-xmin;

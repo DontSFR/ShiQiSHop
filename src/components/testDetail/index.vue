@@ -11,7 +11,8 @@
         </div>
         <div class="left-content">
             <div class="prod_img">
-                <img class="book-img" :src="`https://images.weserv.nl/?url=${bookDetails.img}`"/>
+                 <!-- :src="`https://images.weserv.nl/?url=${bookDetails.img}`" -->
+                <img class="book-img" :src="bookDetails.img"/>
             </div>
             <div class="detail-content">
                 <div class="prod_det_box">
