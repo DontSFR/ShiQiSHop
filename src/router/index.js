@@ -15,14 +15,14 @@ const routes =  [
         component: r => require.ensure([], () => r(require('../view/index/index.vue')), 'index')
       },
       {
-        path:'newBook',
-        name:'newBook',
-        component: r => require.ensure([], () => r(require('../view/newBook/index.vue')), 'newBook')
+        path:'skincare',
+        name:'skincare',
+        component: r => require.ensure([], () => r(require('../view/skincare/index.vue')), 'newBook')
       },
       {
-        path:'recommend',
-        name:'recommend',
-        component: r => require.ensure([], () => r(require('../view/recommend/index.vue')), 'recommend')
+        path:'makeUp',
+        name:'makeUp',
+        component: r => require.ensure([], () => r(require('../view/makeUp/index.vue')), 'recommend')
       },
       {
         path:'special',
@@ -37,7 +37,7 @@ const routes =  [
       {
         path:'search',
         name:'search',
-        component: r => require.ensure([], () => r(require('../view/searchBook/index.vue')), 'search')
+        component: r => require.ensure([], () => r(require('../view/searchGood/index.vue')), 'search')
       },
       {
         path:'category',

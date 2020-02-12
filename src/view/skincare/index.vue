@@ -60,12 +60,13 @@
             getBookList(){
                 this.$ajax({
                     method:'get',
-                    url:'/goods/all?type=香水',
+                    url:'/goods/all?type=护肤',
                     params:{
                         ...this.page
                     }
                 }).then(res=>{
                     this.bookList=res.res.list
+                    this.bookList.push(res.res.list[0])
                     this.page.total=res.res.total
                 })
             },

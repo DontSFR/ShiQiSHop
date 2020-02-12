@@ -2,7 +2,7 @@
     <div class="spcial-content">
         <div class="title">
             <span class="title_icon">
-                <img src="~@/assets/index/bullet1.gif" alt="" title="" />
+                <!-- <img src="~@/assets/index/bullet1.gif" alt="" title="" /> -->
             </span>
             评测中心
         </div>

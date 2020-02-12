@@ -1,39 +1,40 @@
 
 <template>
     <div class="spcial-content">
-        <div class="title">
-            <span class="title_icon">
-                <img src="~@/assets/index/bullet1.gif" alt="" title="" />
-            </span>
-            好书推荐
+        <div class="item-top">
+            <img src="~@/assets/rqxp.png" alt="">
         </div>
         <div class="feat_prod_box" >
             <div class="remen" v-for="(item,t) in bookList">
-                <router-link 
-                    :to="{name:'details',query:{bookId:item.bookId}}"
-                >
-                    <div  class="tu">
-                       <img :src="`https://images.weserv.nl/?url=${item.img}`">
-                    </div>
-                    <div class="detail">
-                        <span>书名：</span><span class="text name">{{item.name}}</span>
-                        <br>
-                        <span>作者：</span><span class="text name">{{item.writer}}</span>
-                        <br>
-                        <span>评分：</span><span class="text grade-num">{{item.grade}}</span>
-                        <br>
-                        <span>{{item.people}}人评价</span>
-                        <br>
-                        <Rate  allow-half disabled v-model="item.gradeNum" ></Rate>
+                <div  class="tu">
+                    <Poptip trigger="hover" content="点击查看详情">
+                        <router-link :to="{name:'details',query:{goodsId:item.goodsId}}">
+                            <img :src="item.img">
+                        </router-link>
+                    </Poptip>
+                </div>
+                <div class="detail">
+                    <span class="text brand">{{item.brand}}</span>
+                    <br>
                         
-                    </div>
-                    <div class="intro">
-                        <span class="intro-title">内容简介：</span>
-                        <span class="intro-content">
-                            {{item.introduce}}
-                        </span>
-                    </div>
-                </router-link>
+            <!-- // brand: "欧莱雅"
+            // description: "兼具唇釉的浓郁亮泽与唇膏的舒适易用，显色、滋润不黏腻。"
+            // goodsId: "testGoods"
+            // goodsName: "小仙贝唇膏"
+            // img: "https://www.lorealparis.com.cn/Product/Detail/1231.loreal"
+            // introduce: "高级贝壳外壳 细腻闪耀唇色 一抹仙气贝出"
+            // price: 145
+            // requirement: "唇"
+            // set: "XXB-001"
+            // taoBaoUrl: "https://detail.tmall.com/item.htm?spm=a1z10.1-b-s.w5003-21588119984.1.6a5f3654AuddrV&id=563367801510&skuId=4024837316337&scene=taobao_shop"
+            // type: "彩妆"
+            // usage: "适量转出1-2mm膏体，均匀涂抹于唇部。" -->
+                    <span class="text name">{{item.goodsName}}</span>
+                    <br>
+                    <span  class="text description">{{item.description}}</span>
+                    <br>
+                    <span class="text grade-num">￥{{item.price}}</span>
+                </div>
             </div>
         </div>
         <div class="page-container">
@@ -54,17 +55,17 @@ export default {
             gradeValue:"",
             valueCustomText:0,
             page:{
-                pageSize: 10,
+                pageSize: 6,
                 total: 0,
                 pageNum: 1
             },
             bookList:[
-                {name:'爱生命',grade:9.4,content:'爱你就想爱生命',price:'34',src:'~@/assets/index/prod1.gif'},
-                {name:'Storm',grade:9.3,content:'暴风雨中的孩子',price:'46',src:'~@/assets/newbook/3.jpg'},
-                {name:'ASKME',grade:9.2,content:'儿童百科百问百答',price:'65',src:'~@/assets/newbook/2.jpg'},
-                {name:'爱生命',grade:9.1,content:'爱你就想爱生命',price:'34',src:'~@/assets/index/prod1.gif'},
-                {name:'Storm',grade:9.4,content:'暴风雨中的孩子',price:'46',src:'~@/assets/newbook/3.jpg'},
-                {name:'ASKME',grade:9.4,content:'儿童百科百问百答',price:'65',src:'~@/assets/newbook/2.jpg'}
+                // {name:'爱生命',grade:9.4,introduce:'爱你就想爱生命',price:'34',src:'~@/assets/index/prod1.gif'},
+                // {name:'Storm',grade:9.3,introduce:'暴风雨中的孩子',price:'46',src:'~@/assets/newbook/3.jpg'},
+                // {name:'ASKME',grade:9.2,introduce:'儿童百科百问百答',price:'65',src:'~@/assets/newbook/2.jpg'},
+                // {name:'爱生命',grade:9.1,introduce:'爱你就想爱生命',price:'34',src:'~@/assets/index/prod1.gif'},
+                // {name:'Storm',grade:9.4,introduce:'暴风雨中的孩子',price:'46',src:'~@/assets/newbook/3.jpg'},
+                // {name:'ASKME',grade:9.4,introduce:'儿童百科百问百答',price:'65',src:'~@/assets/newbook/2.jpg'}
             ]
         }
     },
@@ -77,24 +78,15 @@ export default {
         },
         getBookList(){
             this.$ajax({
-                method:'post',
-                url:'/getBooksByType',
+                method:'get',
+                url:'/goods/all?type=彩妆',
                 params:{
-                    type:11,
                     ...this.page
                 }
             }).then(res=>{
                 this.bookList=res.res.list
+                this.bookList.push(res.res.list[0])
                 this.page.total=res.res.total
-                this.bookList=this.bookList.map(t=>{
-                    let gradeNum=t.grade 
-                    gradeNum=parseFloat(gradeNum)//字符串转化为数字
-                    gradeNum =parseFloat((gradeNum/2).toFixed(1))//数字除以2再转化为number类型
-                    return{
-                        ...t,
-                        gradeNum:gradeNum
-                    }
-                })
             })
         },
         changePage(num){
@@ -107,9 +99,14 @@ export default {
 <style lang="less" scoped>
 @import "~@/style/basic.less";
 .spcial-content{
-    width:100%;
+    width:@win-width-xxmin;
+    margin: 0 auto;
     height: 100%;
     padding: 20px 0 0 20px;
+    .item-top{
+        text-align: center;
+        width:@win-width-xxmin;
+    }
     .title{
         display: inline-block;
         color:#734633 !important;
@@ -133,44 +130,51 @@ export default {
         height: 100%;
         overflow: hidden;
         .remen{
-            float: left;
-            width: 100%;
-            height:180px;
+            display: inline-block;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 48%;
+            // height:180px;
+            overflow: hidden;
             padding: 15px 0 10px 10px;
             margin-right:1.25%;
             border-bottom:1px #b2b2b2 dashed;
             .tu{
                 float: left;
                 img{
-                    width:98px;
-                    height:150px;
+                    width:200px;
+                    height:230px;
                 }
             }
             .detail{
                 float: left;
                 padding-left: 10px;
                 margin-left: 20px;
-                margin-top: 1%;
-                width: 30%;
-                height: 90%;
-                // background-color: aquamarine;
+                width: 230px;
+                text-align: center;
+                height: 230px;
                 border-left:1px dashed #b2b2b2;
                 line-height: 20px;
                 .text{
                     // font-size: 14px;
                 }
+                .brand{
+                    line-height: 70px;
+                    font-weight: bold;
+                    font-size: 22px;
+                }
                 .name{
-                    // display: inline-block;
-                    height: 30px;
+                    line-height: 70px;
+                    font-size: 17px;
                 }
-                /deep/.ivu-rate{
-                    font-size:15px;
-                }
-                /deep/.ivu-rate-star{
-                    margin-right: 5px;
+                .description{
+                    color: #999;
+                    font-size: 12px;
                 }
                 .grade-num{
                     color:#f5a623;
+                    font-size: 14px;
+                    line-height: 50px;
                 }
             }
             .intro{

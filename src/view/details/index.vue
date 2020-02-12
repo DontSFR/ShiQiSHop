@@ -1,55 +1,26 @@
 <template>
     <div class="main-content">
         <div class="spcial-content">
-            <span class="detail-title">书本详情</span>
-            <div class="title">
-                <span class="title_icon">
-                    <img src="~@/assets/index/bullet3.gif"
-                    alt=""
-                    title="" />
-                </span>
-                {{this.testDetails.name}}
+            <div class="item-top">
+                <img src="~@/assets/worthit.png" alt="">
             </div>
             <div class="left-content">
                 <div class="prod_img">
-                    <img class="book-img" :src="`https://images.weserv.nl/?url=${testDetails.img}`"/>
+                    <img class="book-img" :src="testDetails.img"/>
                 </div>
                 <div class="detail-content">
                     <div class="prod_det_box">
                         <div class="detail">
-                            <span>作者：{{testDetails.writer}}</span>
+                            <div class="brand-title">{{testDetails.brand}}/{{testDetails.goodsName}}</div>
                             <br>
-                            <span>出版社: {{testDetails.publisher}}</span>
-                            <br>
-                            <span>定价(￥):  {{testDetails.price}}</span>
-                            <br>
-                            <span>出版日期:  {{testDetails.date}}</span>
-                            <br>
-                        </div>
-                        <div class="rate" >
-                            <span>
-                                评分：
-                            </span>
-                            <br>
-                            <span>
-                                {{testDetails.people}}人评价
-                            </span>
-                            <br>
-                            <span>
-                                <Rate  allow-half disabled v-model="valueCustomText" ></Rate>
-                            </span>
-                            <br>
-                            <span class="rate-num" style="color: #f5a623"> {{testDetails.grade}}</span>
-                        </div>
-                    </div>
-                    <div class="your-rate">
-                        <Button class="collect-button"  type="warning" shape="circle" v-if="collectValue" @click="getCollect(0)">取消收藏</Button>
-                        <Button class="collect-button"   shape="circle"  v-else  @click="getCollect(1)">收&nbsp;&nbsp;藏</Button>
-                        <span>你的评价:</span>
-                        <div class="rate-container" @click='changeRate'>
-                            <Rate show-text allow-half v-model="yourRateValue" :disabled='rateDisabled' >
-                                <span style="color: #f5a623">{{ yourRateValue*2 }}</span>
-                            </Rate>
+                            <p style="color: #666;line-height: 24px">{{testDetails.description}}</p>
+                            <div class="price-requirement">
+                                <span  class="good-price" >￥{{testDetails.price}}</span>
+                                <span class="good-requirement">{{testDetails.requirement}}</span>
+                            </div>
+                            <a :href="testDetails.taoBaoUrl" class="good-buy">
+                                <h2 style="color:#fff;">立即购买>>></h2>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -62,29 +33,26 @@
                     </MenuItem>
                     <MenuItem name="2" @click.native="selectMenu(2)">
                         <Icon type="ios-people" />
-                        评论
+                        相关评测
                         <Badge :count="commentsCount" class="demo-badge-alone"></Badge>
                     </MenuItem>
                 </Menu>
                 <div class="content"> 
                     <!-- 简介区域-->
                     <div class="demo"  v-if="menuTab">
-                        <Divider orientation="left" class="divider" v-model="textname">{{textname}}</Divider>
+                        <Divider orientation="left" class="divider">商品介绍</Divider>
                         <p class="text">
-                            <!-- {{this.testDetails.detail.content}} -->
+                            {{testDetails.introduce}}
                         </p>
-                        <Divider orientation="left" class="divider" v-model="catalog">{{catalog}}</Divider>
-                        <p class="text " style="white-space: pre-wrap;">
-                            <!-- {{this.testDetails.detail.catalog}} -->
-                        </p>
-                        <Divider orientation="left" class="divider" v-model="writerIntro">{{writerIntro}}</Divider>
+                        <Divider orientation="left" class="divider">使用方法</Divider>
                         <p class="text">
-                            <!-- {{this.testDetails.detail.writer}} -->
+                            {{testDetails.usage}}
                         </p>
+                        
                     </div> 
                     <!-- 评论区域-->
                     <div class="demo" v-else >
-                        <div class="your-comment" @click="leaveComment">
+                        <!-- <div class="your-comment" @click="leaveComment">
                             <Icon type="ios-create-outline" color='#37A' size="24"/>
                             <span>留下你的评论</span>
                         </div>    
@@ -97,17 +65,27 @@
                             @on-ok="commentSend"
                         >
                             <Input v-model="commentText" type="textarea" :autosize="true" placeholder="说点什么吧" />
-                        </Modal>
-                        <div class="comment-container" v-for="item in testDetails.comments">
-                            <div class="user-message">
-                                <p class="user-name">{{item.person}}</p>
-                                <p class="user-grade">评分：{{item.commentGrade||'无'}}</p>
-                                <p class="user-date">{{item.commentDate}}</p>
+                        </Modal> -->
+                        <div class="comment-container" v-for="item in testAllPc">
+                            <div style="overflow:hidden;position:relative;">
+                                <div class="user-message">
+                                    <p class="user-name">{{item.userName}}</p>
+                                    <p class="user-grade">点赞人数：{{item.likeNum||'无'}}</p>
+                                    <p class="user-date">{{item.createTime}}</p>
+                                </div>
+                                <div class="comment-img">
+                                    <img :src="item.imgUrl">
+                                </div>
+                                <div class="comment-message">
+                                    {{item.content}}
+                                </div>
+                                <div class="comment-detaile">
+                                    <router-link class="more" :to="{name:'testDetails',query:{commentId:item.commentId}}" >
+                                        <span style="color: #f5a623;font-size:18px;">- 更多详情 -</span> 
+                                    </router-link>
+                                </div>
                             </div>
-                            <div class="comment-message">
-                                <p class="user-comment">{{item.commentContent}}</p>
-                            </div>
-                            <Divider/>
+                            <Divider style="margin: 15px 0;"/>
                         </div>
                     </div>
                 </div> 
@@ -116,24 +94,20 @@
     </div>
 </template>
 <script>
-// import bookDetail from '@/components/bookDetail/index.vue'
     export default{
-        // components: {bookDetail},
         data () {
             return {
                 id:12345,
-                rateDisabled:true,
                 commentsCount:0,
                 valueCustomText: 0,
-                yourRateValue:0,
-                textname:"内容简介",
-                catalog:"目录",
-                testDetails:{},
-                writerIntro:"作者简介",
+                // yourRateValue:0,
+                testDetails:{
+                    list:[]
+                },
+                testAllPc:[],
                 menuTab:true,
                 commentModal:false,
                 commentText:'',
-                bookName:'书名',
                 collectValue:false,
                 bookDetail:[
                     {
@@ -211,47 +185,52 @@
                 }
             },
             getTestDeails(){
+                console.log('this.$route.query.commentId',this.$route.query.goodsId)
                 this.$ajax({
                     method:'get',
-                    url:'/comment/one',
-                    data:{
-                        commentId:this.$route.query.commentId,
-                        userId:this.$cookies.get('userId')
+                    url:'/goods/detail',
+                    params:{
+                        goodsId:this.$route.query.goodsId
                     }
                 }).then(res=>{
                     this.testDetails=res.res
-                    // let grade = this.testDetails.grade
-                    // this.collectValue=res.res.hadCollected//查看是否收藏
-                    // this.yourRateValue=res.res.currentUserGrade/2//查看最后一次评价的分数
-                    // grade=parseFloat(grade)//字符串转化为数字
-                    // this.valueCustomText=parseFloat((grade/2).toFixed(1))//数字除以2再转化为number类型
                 })
+                this.$ajax({
+                    method:'get',
+                    url:'/comment/allPc',
+                    params:{
+                        goodsId:this.$route.query.goodsId
+                    }
+                }).then(res=>{
+                    this.testAllPc=res.res.list
+                })
+                // /allPc?goodsId=?
             },
-            changeRate(){
-                if(this.$cookies.get('userId')){
-                    this.rateDisabled=false
-                    this.$ajax({
-                        method:'post',
-                        url:'/applyComment',
-                        params:{
-                            bookId:this.$route.query.bookId,
-                            userId:this.$cookies.get('userId'),
-                            grade:(this.yourRateValue*2)
-                        }
-                    }).then(res=>{
-                            if(res.code===200){
-                                this.$Notice.success({
-                                    title: '评价成功'
-                                })
-                                this.getTestDeails()
-                            }
-                        })
-                }else{
-                    this.$Notice.error({
-                        title: '评价失败，用户未登录'
-                    })
-                }
-            },
+            // changeRate(){
+            //     if(this.$cookies.get('userId')){
+            //         this.rateDisabled=false
+            //         this.$ajax({
+            //             method:'post',
+            //             url:'/applyComment',
+            //             params:{
+            //                 bookId:this.$route.query.bookId,
+            //                 userId:this.$cookies.get('userId'),
+            //                 grade:(this.yourRateValue*2)
+            //             }
+            //         }).then(res=>{
+            //                 if(res.code===200){
+            //                     this.$Notice.success({
+            //                         title: '评价成功'
+            //                     })
+            //                     this.getTestDeails()
+            //                 }
+            //             })
+            //     }else{
+            //         this.$Notice.error({
+            //             title: '评价失败，用户未登录'
+            //         })
+            //     }
+            // },
             selectMenu(index){
                 this.menuTab=(index===1)
             },
@@ -296,15 +275,18 @@
     
 }
 .spcial-content {
-    
     width:@win-width-xmin;
     margin: 0 auto;
-    min-height: 1080px;
+    min-height: 770px;
     // height: 100%;
     // float: left;
     // background: url("~@/assets/index/center_bg_1.png") repeat-y;
     background-size:100% 100%;
     padding: 20px 0 0 20px;
+    .item-top{
+        text-align: center;
+        width:@win-width-xmin;
+    }
     .detail-title{
         display: inline-block;
         width: 100%;
@@ -323,13 +305,78 @@
     }
     .left-content{
         padding-left:10px ;
-        height:280px;
+        // height:280px;
         margin:0 20px 20px 0;
+        overflow: hidden;
         .detail-content{
-            width:60%;
-            float:left;
-            margin-left: 25px;
+            .brand-title {
+                color: #734633;
+                font-size: 32px;
+                line-height: 50px;
+                margin: 20px 0;
+            }
+            .price-requirement{
+                margin: 30px 0;
+                height:36px;
+            }
+            .good-price{
+                text-align: center;
+                display:inline-block;
+                margin-bottom: 20px;
+                width:250px;
+                border-right:1px solid #f5a623;
+                height:36px;
+                line-height:36px;
+                font-size:30px;
+            }
+            .good-requirement{
+                text-align: center;
+                display:inline-block;
+                width:250px;
+                height:36px;
+                line-height:36px;
+                font-size:30px;
+            }
+            .good-buy{
+                text-align: center;
+                width: 145px;
+                display: inline-block;
+                line-height: 35px;
+                background-color: #f5a623;
+                margin-top: 30px;
+                margin-left:350px;
+            }
+            // width: 93%;
+            width: calc(100% - 610px);
+            overflow: hidden;
             position:relative;
+            display: inline-block;
+            .prod_det_box{
+                height: 400px;
+                padding:25px 0 0 25px;
+                border:1px solid rgb(209, 205, 205);
+                border-radius:10px;
+                .detail{
+                    width: 100%;
+                    display: inline-block;
+                    span{
+                        margin: 5px 0;
+                        display: inline-block;
+                    }
+                }
+                .rate{
+                    display:inline-block;
+                    // width: 50%;
+                    span{
+                        margin: 5px 0;
+                        display: inline-block;
+                    }
+                    .rate-num{
+                        font-size: 50px;
+                        line-height: 60px;
+                    }
+                }
+            }
             .your-rate{
                 line-height: 50px;
                 height:50px;
@@ -360,46 +407,19 @@
             }
             
         }
-        .prod_det_box{
-            height: 240px;
-            padding:25px 0 0 25px;
-            border:1px solid rgb(209, 205, 205);
-            border-radius:10px;
-            .detail{
-                width: 50%;
-                float: left;
-                display: inline-block;
-                span{
-                    margin: 5px 0;
-                    display: inline-block;
-                }
-            }
-            .rate{
-                display:inline-block;
-                width: 50%;
-                span{
-                    margin: 5px 0;
-                    display: inline-block;
-                }
-                .rate-num{
-                    font-size: 50px;
-                    line-height: 60px;
-                }
-            }
-        }
     }
     .prod_img{
-        float:left;
+        display: inline-block;
         padding:0 5px 0 0;
         text-align:center;
         .book-img{
-            width: 200px;
-            height:260px;
+            border:1px solid rgb(209, 205, 205);
+            width: 600px;
+            height:400px;
+            object-fit: contain;
         }
     }
     .intro-content{
-        width: 93%;
-        margin:50px 0 0 10px;
         /deep/.ivu-menu-light{
             background: none;
         }
@@ -442,7 +462,10 @@
                     .user-message{
                         text-align: center;
                         float: left;
-                        width: 15%;
+                        p{
+                            line-height: 30px;
+                        }
+                        width: 150px;
                         padding-bottom: 20px;
                         .user-name{
                             color:#37A;
@@ -451,10 +474,27 @@
                             color:#f5a623;
                         }
                     }
+                    .comment-img{
+                        width: 90px;
+                        height: 110px;
+                        float: left;
+                        img{
+                            width: 100%;
+                            height:100%;
+                        }
+                    }
                     .comment-message{
                         float: left;
-                        margin:0 0 3% 3%;
-                        width: 82%;
+                        margin-left:10px;
+                        width: 750px;
+                        font-size: 14px;
+                        overflow: hidden; //超出隐藏
+                        display: -webkit-box;
+                        -webkit-line-clamp: 5;   //只展示5行
+                        -webkit-box-orient: vertical;// 文本多行显示省略号的关键css语句
+                    }
+                    .comment-detaile{
+                        float: left;
                     }
                 }
             }

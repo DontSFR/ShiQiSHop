@@ -7,13 +7,13 @@
                     首页
                 </router-link>
             </MenuItem>
-            <MenuItem name="recommend">
-                <router-link to='/recommend' class="a-link">
+            <MenuItem name="makeUp">
+                <router-link to='/makeUp' class="a-link">
                     彩妆
                 </router-link>
             </MenuItem>
-            <MenuItem name="newBook">
-                <router-link to='/newBook' class="a-link">
+            <MenuItem name="skincare">
+                <router-link to='/skincare' class="a-link">
                     护肤
                 </router-link> 
             </MenuItem>
@@ -27,11 +27,11 @@
                     品牌中心
                 </router-link>
             </MenuItem>
-            <MenuItem name="center" >
+            <!-- <MenuItem name="center" >
                 <router-link to='/center' class="a-link personer">
                     电子商城
                 </router-link>
-            </MenuItem>
+            </MenuItem> -->
             <MenuItem name="news">
                 <router-link to='/news' class="a-link personer">
                     最新资讯
@@ -168,7 +168,7 @@ export default {
         }
         .login{
             display: inline-block;
-            width: 50px;
+            width: 70px;
             color:#f7a849;
             margin-left: 60%;
             cursor:pointer;

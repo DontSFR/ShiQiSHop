@@ -2,7 +2,7 @@
     <div class="new-content">
         <div class="title">
             <span class="title_icon">
-                <img src="~@/assets/index/bullet2.gif" alt="" title="" />
+                <!-- <img src="~@/assets/index/bullet2.gif" alt="" title="" /> -->
             </span>
             <span>{{this.$route.query.name}}</span>
         </div>

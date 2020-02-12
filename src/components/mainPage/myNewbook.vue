@@ -2,7 +2,7 @@
     <div class="new-content">
         <a class="title">
             <span class="title_icon">
-                <img src="~@/assets/index/bullet1.gif" alt="" title="" />
+                <!-- <img src="~@/assets/index/bullet1.gif" alt="" title="" /> -->
             </span>
             <router-link to='/newBook' >
                 <span  class="title-color">新书上架/更多</span>

@@ -1,13 +1,16 @@
 <template>
     <div class="main-content">
         <div class="left-content">
+            <div class="item-top">
+                <img src="~@/assets/pczx.png" alt="">
+            </div>
             <div class="spcial-content">
-                <div class="title">
+                <!-- <div class="title">
                     <span class="title_icon">
                         <img src="~@/assets/index/bullet1.gif" alt="" title="" />
                     </span>
                     评测中心
-                </div>
+                </div> -->
                 <div class="feat_prod_box" >
                     <div class="prod_det_box" v-for="(item,t) in newsList">
                         <div class="prod_img">
@@ -74,11 +77,7 @@
                     this.page.total=res.res.total
                     // console
                     this.newsList=res.res.list
-                    this.newsList.push(
-                        {
-                            content:'首富期货违法请问和父亲未发货请问分护肤IQ维护费UI全微分鬼切丸和服IQ违法跪求围观华府IQ网格放一起为分请问发过去违法企鹅王富贵齐格飞奇怪为放一起文峰区高温费全微分 权威股份有轻微 '
-                        }
-                    )
+                   
                 })
             },
             changePage(num){
@@ -92,22 +91,26 @@
 @import "~@/style/basic.less";
 .main-content{
     width: 100%;
-    
 }
 .left-content{
     width:@win-width-xmin;
     margin: 0 auto;
-    min-height: 1080px;
+    min-height: 770px;
     // height: 100%;
     // float: left;
     // background: url("~@/assets/index/center_bg_1.png") repeat-y;
     background-size:100% 100%;
+    .item-top{
+        text-align: center;
+        width:@win-width-xmin;
+        margin: 0 auto;
+    }
 }
 .spcial-content{
     width:100%;
     height: 100%;
     overflow: hidden;
-    padding: 20px 0 0 20px;
+    padding: 0 0 0 20px;
     .title{
         color:#734633;
         font-size:19px;

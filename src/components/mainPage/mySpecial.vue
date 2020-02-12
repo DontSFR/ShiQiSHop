@@ -2,7 +2,7 @@
     <div class="spcial-content">
         <a class="title">
             <span class="title_icon">
-                <img src="~@/assets/index/bullet1.gif" alt="" title="" />
+                <!-- <img src="~@/assets/index/bullet1.gif" alt="" title="" /> -->
             </span>
             <router-link to='/recommend' >
                 <span  class="title-color">特色书籍/更多</span>

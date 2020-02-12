@@ -3,7 +3,7 @@
             <Carousel v-model="value1" loop style="width:100%;height:500px;margin-top:20px">
                 <CarouselItem>
                     <div class="demo-carousel">
-                        <img src="@/assets/index/test01.jpg" alt="">
+                        <img src="@/assets/index/test03.jpg" alt="">
                     </div>
                 </CarouselItem>
                 <CarouselItem>
@@ -13,7 +13,7 @@
                 </CarouselItem>
                 <CarouselItem>
                     <div class="demo-carousel">
-                        <img src="@/assets/index/test03.jpg" alt="">
+                        <img src="@/assets/index/test01.jpg" alt="">
                     </div>
                 </CarouselItem>/
             </Carousel>
@@ -37,7 +37,7 @@ import myRecommend from '@/components/mainPage/myRecommend.vue'
 .left-content{
     width:@win-width-xmin;
     margin: 0 auto;
-    min-height: 1080px;
+    // min-height: 650px;
     // height: 100%;
     // float: left;
     // background: url("~@/assets/index/center_bg_1.png") repeat-y;

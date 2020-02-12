@@ -1,6 +1,7 @@
 <template>
     <div class="main-content">
         <div class="left-content">
+            
             <more-recommend></more-recommend>
         </div>
     </div>
@@ -17,12 +18,15 @@ import moreRecommend from "@/components/moreRecommend/index.vue";
     width: 100%;
 }
 .left-content{
-    width: 65%;
-    min-height: 1080px;
+    width:100%;
+    margin: 0 auto;
+    min-height: 620px;
     // height: 100%;
-    float: left;
     background: url("~@/assets/index/center_bg_1.png") repeat-y;
     background-size:100% 100%;
+    .item-top{
+        text-align: center;
+    }
 }
 </style>
 

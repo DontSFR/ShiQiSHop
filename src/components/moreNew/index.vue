@@ -2,7 +2,7 @@
     <div class="new-content">
         <div class="title">
             <span class="title_icon">
-                <img src="~@/assets/index/bullet1.gif" alt="" title="" />
+                <!-- <img src="~@/assets/index/bullet1.gif" alt="" title="" /> -->
             </span>
             新书上架(30本)
         </div>

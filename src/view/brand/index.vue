@@ -1,7 +1,12 @@
 <template>
     <div class="main-content">
-        <div></div>
+        
         <div class="left-content">
+            <div class="item-top">
+                <img src="~@/assets/ppss.png" alt="">
+            </div>
+            <!-- <Divider style="margin:10px 0;"/> -->
+            <!-- <Divider style="margin:2px 0;"/> -->
             <div class="item">
                 <img src="@/assets/index/line.png" >
                 <Tooltip content="点击查看LOREAL品牌故事" placement="top">
@@ -73,10 +78,12 @@
     margin: 0 auto;
     min-height: 1080px;
     background-size:100% 100%;
-    
-    .item{
+    .item-top{
+        text-align: center;
         margin: 0 auto;
         width:@win-width-xxmin;
+    }
+    .item{
         // background-color: aquamarine;
         height: 500px;
         display: flex;
