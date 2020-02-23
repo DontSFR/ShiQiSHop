@@ -31,7 +31,7 @@
             // usage: "适量转出1-2mm膏体，均匀涂抹于唇部。" -->
                     <span class="text name">{{item.goodsName}}</span>
                     <br>
-                    <span  class="text description">{{item.description}}</span>
+                    <span  class="text description">{{item.introduce}}</span>
                     <br>
                     <span class="text grade-num">￥{{item.price}}</span>
                 </div>
@@ -165,11 +165,21 @@ export default {
                 }
                 .name{
                     line-height: 70px;
+                    width: 100%;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;   //只展示5行
+                    -webkit-box-orient: vertical;
                     font-size: 17px;
                 }
                 .description{
                     color: #999;
                     font-size: 12px;
+                    width: 100%;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;   //只展示5行
+                    -webkit-box-orient: vertical;
                 }
                 .grade-num{
                     color:#f5a623;

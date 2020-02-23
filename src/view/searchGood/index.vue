@@ -1,21 +1,18 @@
 <template>
 <div class="main-content">
     <div class="left-content">
+        <div class="item-top">
+            <img src="~@/assets/sycp.png" alt="">
+        </div>
         <div class="new-content">
-            <div class="title">
-                <span class="title_icon">
-                    <!-- <img src="~@/assets/index/bullet2.gif" alt="" title="" /> -->
-                </span>
-                <span>搜索结果</span>
-            </div>
-            <div class="new_products" v-if="newbookList.length!==0">
-                <div class="new_prod_box"  v-for="item in newbookList">
+            <div class="new_products" v-if="shopList.length!==0">
+                <div class="new_prod_box"  v-for="item in shopList">
                     <router-link 
-                        :to="{name:'details',query:{bookId:item.bookId}}"
+                        :to="{name:'details',query:{goodsId:item.goodsId}}"
                     >
-                        <span class="book-name">{{item.name}}</span>
+                        <span class="book-name">{{item.goodsName}}</span>
                         <div class="new_prod_bg">
-                            <img :src="`https://images.weserv.nl/?url=${item.img}`"alt="" title="" class="thumb" border="0" />
+                            <img :src="item.img"alt="" title="" class="thumb" border="0" />
                         </div>
                     </router-link>       
                 </div>
@@ -23,7 +20,7 @@
             <div class="new_products" v-else>
                 <p class="notice">书库里暂时找不到你想要的书!</p>
             </div>
-            <div class="page-container"  v-show="newbookList.length!==0">
+            <div class="page-container" v-show="shopList.length!==0">
                 <Page 
                     :total="page.total" 
                     :page-size="page.pageSize" 
@@ -45,7 +42,7 @@ export default {
                 total: 0,
                 pageNum: 1
             },
-            newbookList:[
+            shopList:[
                 {name:'爱生命',content:'爱你就想爱生命',price:'34',src:'~@/assets/newbook/1.jpg'},
                 {name:'Storm',content:'暴风雨中的孩子',price:'46',src:'~@/assets/newbook/3.jpg'},
                 {name:'ASKME',content:'儿童百科百问百答',price:'65',src:'~@/assets/newbook/2.jpg'},
@@ -81,16 +78,17 @@ export default {
             this.getCategoryList()
         },
         getCategoryList(){
+            console.log('this.$route.query.keyword',this.$route.query.keyword)
             this.$ajax({
-                method:"post",
-                url:"/search",
+                method:"get",
+                url:"/goods/search",
                 params:{
-                    ...this.page,
                     keyword:this.$route.query.keyword
                 }
             }).then(res=>{
                 this.page.total=res.res.total
-                this.newbookList=res.res.list
+                this.shopList=res.res.list
+                console.log('res', this.shopList)
             })
         },
         changePage(num){
@@ -104,24 +102,28 @@ export default {
 @import "~@/style/basic.less";
 .main-content{
     width: 100%;
-}
-.left-content{
-    width: 65%;
-    height: 1080px;
-    // min-height:1080px;
-    float: left;
     background: url("~@/assets/index/center_bg_1.png") repeat-y;
     background-size:100% 100%;
+}
+.left-content{
+    width:@win-width-xmin;
+    margin: 0 auto;
+    min-height: 770px;
+    background-size:100% 100%;
+    .item-top{
+        text-align: center;
+        width:@win-width-xmin;
+        margin: 0 auto;
+    }
 }
 .new-content{
     width:100%;
     height:100%;
-    padding: 20px 0 20px 20px;
     .title{
         color:#734633;
         font-size:19px;
         height:30px;
-        margin:10px 0 10px 0;
+        // margin:10px 0 10px 0;
         .title_icon{
             float:left;
             padding:0 5px 0 0;

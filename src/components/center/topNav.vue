@@ -77,16 +77,12 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@/style/basic.less";
-.person-top{
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
     .user-massage{
-        width: 85%;
+        width: 100%;
         height: 180px;
         line-height: 180px;
         margin: 0 auto;
-        // margin-top:10%;
+        overflow: hidden;
         .user-img{
             display: inline-block;
         }
@@ -132,19 +128,4 @@ export default {
         line-height:80px;
         border-radius: 80px;
     }
-}
-// .person-top::before{
-//     content:"";
-//     background: url("~@/assets/index/c4.jpg") center center;
-//     background-size:cover;
-//     opacity:0.5;//透明度设置
-//     z-index:-1;
-//     width: 100%;
-//     height: 200px;
-//     // position:absolute;
-//     //一定要设置position:absolute,这样才能设置z-index，让背景处于内容的下一层
-//     // top:0px;
-//     // left:0px;
-//     // border-radius:40px;
-// }
 </style>

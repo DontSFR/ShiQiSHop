@@ -16,9 +16,9 @@
                         <div class="detail">
                             <span class="text brand">{{item.brand}}</span>
                             <br>
-                            <span class="text name">{{item.goodsName}}</span>
+                            <div class="text name">{{item.goodsName}}</div>
                             <br>
-                            <span  class="text description">{{item.description}}</span>
+                            <span  class="text description">{{item.introduce}}</span>
                             <br>
                             <span class="text grade-num">￥{{item.price}}</span>
                         </div>
@@ -152,11 +152,21 @@
                 }
                 .name{
                     line-height: 70px;
+                    width: 100%;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;   //只展示5行
+                    -webkit-box-orient: vertical;
                     font-size: 17px;
                 }
                 .description{
                     color: #999;
                     font-size: 12px;
+                    width: 100%;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;   //只展示5行
+                    -webkit-box-orient: vertical;
                 }
                 .grade-num{
                     color:#f5a623;

@@ -13,7 +13,7 @@
                         <div class="detail">
                             <div class="brand-title">{{testDetails.brand}}/{{testDetails.goodsName}}</div>
                             <br>
-                            <p style="color: #666;line-height: 24px">{{testDetails.description}}</p>
+                            <p class="brand-introduce" style="color: #666;line-height: 24px">{{testDetails.introduce}}</p>
                             <div class="price-requirement">
                                 <span  class="good-price" >￥{{testDetails.price}}</span>
                                 <span class="good-requirement">{{testDetails.requirement}}</span>
@@ -42,7 +42,7 @@
                     <div class="demo"  v-if="menuTab">
                         <Divider orientation="left" class="divider">商品介绍</Divider>
                         <p class="text">
-                            {{testDetails.introduce}}
+                            {{testDetails.description}}
                         </p>
                         <Divider orientation="left" class="divider">使用方法</Divider>
                         <p class="text">
@@ -315,8 +315,17 @@
                 line-height: 50px;
                 margin: 20px 0;
             }
+            .brand-introduce{
+                height: 50px;
+                // background-color: #37A;
+                width: 100%;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;   //只展示5行
+                -webkit-box-orient: vertical;
+            }
             .price-requirement{
-                margin: 30px 0;
+                margin: 20px 0;
                 height:36px;
             }
             .good-price{
@@ -494,7 +503,7 @@
                         -webkit-box-orient: vertical;// 文本多行显示省略号的关键css语句
                     }
                     .comment-detaile{
-                        float: left;
+                        float: right;
                     }
                 }
             }

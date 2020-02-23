@@ -1,26 +1,67 @@
 <template>
     <div class="main-content">
         <div class="spcial-content">
-            <div class="title">
+            <!-- <div class="title">
                 <span class="title_icon">
                     <img src="~@/assets/index/bullet3.gif"
                     alt=""
                     title="" />
                 </span>
                 评论详情
+            </div> -->
+            <!-- what_news_02 -->
+            <div class="item-top">
+                <img src="~@/assets/worthit.png" alt="">
             </div>
-            <span class="detail-title">{{this.testDetails.title}}</span>
+            <div class="detail-box">
+                <div class="detail-line"></div>                
+                <div class="detail-time">{{this.testDetails.userName}}（著）</div>
+                <div class="detail-line"></div> 
+            </div>
+            <div class="detail-title">
+                {{this.testDetails.title}}
+            </div>
+            <div class="detail-box">
+                <div class="detail-line"></div>                
+                <div class="detail-time">{{this.testDetails.createTime}}</div>
+                <div class="detail-line"></div> 
+            </div>
             <div class="left-content">
-                <div class="prod_img">
-                    <img class="book-img" :src="testDetails.imgUrl"/>
-                </div>
+                
                 <div class="detail-content">
                     <div class="prod_det_box">
+                        <div class="prod_img">
+                            <img class="book-img" :src="testDetails.imgUrl"/>
+                        </div>
+                        {{this.testDetails.content}}
                     </div>
                     <div class="your-rate">
-                        <Button class="collect-button"  type="warning" shape="circle" v-if="collectValue" @click="getCollect()">爱心</Button>
-                        <Button class="collect-button"   shape="circle"  v-else  @click="getCollect()">灰心</Button>
+                        <Button class="collect-button" v-if="collectValue"  type="warning" shape="circle" @click="getCollect()">已收藏{{testDetails.likeNum}}人</Button>
+                        <Button class="collect-button"   shape="circle"  v-else  @click="getCollect()">收藏</Button>
+                        <div class="your-comment" @click="leaveComment">
+                            <Icon type="ios-create-outline" color='#37A' size="24"/>
+                            <span>留下你的评论</span>
+                        </div>    
+                        <Modal 
+                            v-model="commentModal" 
+                            draggable scrollable 
+                            ok-text ="发送" 
+                            title="评论区"
+                            @on-cancel="commentCancel" 
+                            @on-ok="commentSend"
+                        >
+                            <Input v-model="commentText" type="textarea" :autosize="true" placeholder="说点什么吧" />
+                        </Modal>
                     </div>
+                </div>
+                <div class="detail-page">
+                    <Page 
+                        :total="page.total" 
+                        :page-size="page.pageSize" 
+                        :current="page.pageNum" 
+                        show-elevator 
+                        @on-change="changePage"
+                    />
                 </div>
             </div>
         </div>
@@ -31,7 +72,15 @@
         data () {
             return {
                 testDetails:{},
+                commentAll:[],
+                page: {
+                    total:0,
+                    pageSize:10,
+                    pageNum:1
+                },
                 collectValue:false,
+                commentModal:false,
+                commentText:'',
             }
         },
         create(){
@@ -47,6 +96,7 @@
         methods:{
             init(){
                 this.getTestDeails()
+                this.commentAllLy()
             },
             getCollect(){
                 console.log('22121')
@@ -87,6 +137,58 @@
                     this.collectValue = res.res.zan
                 })
             },
+            commentAllLy(){
+                this.$ajax({
+                    method:'get',
+                    url:'/comment/allLy',
+                    params:{
+                        commentId:this.$route.query.commentId,
+                        userId:this.$cookies.get('userId'),
+                        pageNum: 1,
+                        pageSize: 10
+                    }
+                }).then(res=>{
+                    this.commentAll=res.res
+                    console.log('this.commentAll',this.commentAll)
+                    this.page.total = res.res.total
+                })
+            },
+            leaveComment(){
+                this.commentModal=true
+            },commentSend(){
+                if(this.commentText===''){
+                    this.$Notice.error({
+                        title: '评论内容不能为空'
+                    })
+                }else{
+                    this.$ajax({
+                        method:'post',
+                        url:'/comment/add',
+                        params:{
+                            commentPid:this.$route.query.bookId,
+                            userId:this.$cookies.get('userId'),
+                            content:this.commentText
+                            // "title": "标题",
+                        }
+                    }).then(res=>{
+                        if(res.code===200){
+                            this.$Notice.success({
+                                title: '评论成功'
+                            })
+                            this.getTestDeails()
+                        }
+                    })
+                }
+                this.commentText=''
+            },
+            commentCancel(){
+                this.commentText=''
+            },
+            changePage(num){
+                this.page.pageNum=num
+                this.commentAllLy()
+            }
+            
         }
     }
 </script>
@@ -107,11 +209,41 @@
     // background: url("~@/assets/index/center_bg_1.png") repeat-y;
     background-size:100% 100%;
     padding: 20px 0 0 20px;
+    .item-top{
+        // text-align: left;
+        margin-left:-170px;
+        width:@win-width-xxmin;
+    }
     .detail-title{
-        display: inline-block;
-        width: 100%;
-        font-size: 20px;
+        // display: inline-block;
+        width: 500px;
+        font-size: 22px;
+        font-family: bold;
         text-align: center;
+        margin: 0 auto;
+        color: #000;
+    }
+    .detail-box{
+        width: 810px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: 20px auto;
+        .detail-time{
+            white-space:nowrap;
+            margin: 0 20px;
+            flex: 1 1 auto;
+            font-size: 18px;
+        }
+        .detail-line{
+            flex: 0 0 auto;
+            width: 350px;
+            height: 3px;
+            background-color: #f7a849;
+        }
     }
     .title {
         color: #734633;
@@ -125,19 +257,19 @@
     }
     .left-content{
         padding-left:10px ;
-        height:300px;
         margin:0 20px 20px 0;
         .detail-content{
-            width:80%;
+            min-height:300px;
             float:left;
             margin-left: 25px;
             position:relative;
             .your-rate{
+                width: 800px;
                 line-height: 50px;
                 height:50px;
+                float: left;
                 .rate-container{
                     display: inline-block;
-                    // background-color: #37A;
                     line-height: 16px;
                 }
                 /deep/.ivu-btn-circle{
@@ -157,25 +289,55 @@
                     border-color: #F91;
                 }
                 .collect-button{
-                    margin-right: 20px;
+                    margin-top: 10px;
+                    float: left;
+                }
+                .your-comment{
+                    float: right;
+                    width: 100px;
+                    height: 25px;
+                    span{
+                        color: #37A;
+                    }
+                    :hover{
+                        cursor:pointer
+                    }
                 }
             }
             
         }
+        .detail-page{
+            // width: 100%;
+            text-align: right;
+            padding-bottom: 10px;
+        }
         .prod_det_box{
-            height: 260px;
-            padding:25px 0 0 25px;
+            width:800px;
+            min-height: 260px;
+            // height: 260px;
+            padding:25px;
             border:1px solid rgb(209, 205, 205);
             border-radius:10px;
-            .detail{
-                width: 50%;
-                float: left;
-                display: inline-block;
-                span{
-                    margin: 5px 0;
-                    display: inline-block;
+            font-size: 17px;
+            color: rgb(100, 100, 100);
+            .prod_img{
+                margin:10px auto;
+                text-align:center;
+                .book-img{
+                    width: 500px;
+                    // height:260px;
+                    // border: 1px solid #ddd;
+                    object-fit: contain;
                 }
             }
+            // .detail{
+            //     width: 50%;
+            //     display: inline-block;
+            //     span{
+            //         margin: 5px 0;
+            //         display: inline-block;
+            //     }
+            // }
             .rate{
                 display:inline-block;
                 width: 50%;
@@ -188,15 +350,6 @@
                     line-height: 60px;
                 }
             }
-        }
-    }
-    .prod_img{
-        float:left;
-        padding:0 5px 0 0;
-        text-align:center;
-        .book-img{
-            width: 200px;
-            height:260px;
         }
     }
 }

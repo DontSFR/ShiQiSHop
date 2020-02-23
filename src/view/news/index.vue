@@ -5,12 +5,6 @@
                 <img src="~@/assets/pczx.png" alt="">
             </div>
             <div class="spcial-content">
-                <!-- <div class="title">
-                    <span class="title_icon">
-                        <img src="~@/assets/index/bullet1.gif" alt="" title="" />
-                    </span>
-                    评测中心
-                </div> -->
                 <div class="feat_prod_box" >
                     <div class="prod_det_box" v-for="(item,t) in newsList">
                         <div class="prod_img">
@@ -133,13 +127,17 @@
             color:#f8981d;
             padding:5px 0 0 15px;
             font-size:16px;
+            overflow: hidden; 
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
         }
         p.details{
             padding:5px 15px 5px 15px;
             font-size:14px;
             overflow: hidden; 
             display: -webkit-box;
-            -webkit-line-clamp: 4;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
         }
         .user-name{
