@@ -33,35 +33,43 @@
                         <div class="prod_img">
                             <img class="book-img" :src="testDetails.imgUrl"/>
                         </div>
-                        {{this.testDetails.content}}
-                    </div>
-                    <div class="your-rate">
-                        <Button class="collect-button" v-if="collectValue"  type="warning" shape="circle" @click="getCollect()">已收藏{{testDetails.likeNum}}人</Button>
-                        <Button class="collect-button"   shape="circle"  v-else  @click="getCollect()">收藏</Button>
-                        <div class="your-comment" @click="leaveComment">
-                            <Icon type="ios-create-outline" color='#37A' size="24"/>
-                            <span>留下你的评论</span>
-                        </div>    
-                        <Modal 
-                            v-model="commentModal" 
-                            draggable scrollable 
-                            ok-text ="发送" 
-                            title="评论区"
-                            @on-cancel="commentCancel" 
-                            @on-ok="commentSend"
-                        >
-                            <Input v-model="commentText" type="textarea" :autosize="true" placeholder="说点什么吧" />
-                        </Modal>
+                        <div style="padding-bottom:10px;">
+                            
+                            {{this.testDetails.content}}
+                        </div>
+                        
+                        <div class="your-rate">
+                            <Button class="collect-button" v-if="collectValue"  type="warning" shape="circle" @click="getCollect()">已收藏{{testDetails.likeNum}}人</Button>
+                            <Button class="collect-button"   shape="circle"  v-else  @click="getCollect()">收藏</Button>
+                        </div>
                     </div>
                 </div>
                 <div class="detail-page">
-                    <Page 
-                        :total="page.total" 
-                        :page-size="page.pageSize" 
-                        :current="page.pageNum" 
-                        show-elevator 
-                        @on-change="changePage"
-                    />
+                    <div v-if="!page.total">暂无相关留言~</div>
+                    <div v-if="page.total">
+                        <div class="comment-box">
+                            ...相关留言...
+                        </div>
+                        <div class="comment-send">
+                            <Input v-model="commentText" maxlength="500" show-word-limit type="textarea" placeholder="说点什么吧..." style="width: 270px" />
+                            <Button type="primary" @click="commentSend">发送</Button>
+                        </div>
+                        <div v-for="item in commentAllList" class="comment-content">
+                            <!-- <div> -->
+                                <span class="comment-name">{{item.userName}}</span>
+                                <span class="comment-time">{{item.createTime}}</span> 
+                            <!-- </div> -->
+                            <div class="comment-detail">{{item.content}}</div>
+                        </div>
+                        <Page 
+                            style="float:right;"
+                            :total="page.total" 
+                            :page-size="page.pageSize" 
+                            :current="page.pageNum" 
+                            show-elevator 
+                            @on-change="changePage"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,10 +80,10 @@
         data () {
             return {
                 testDetails:{},
-                commentAll:[],
+                commentAllList:[],
                 page: {
                     total:0,
-                    pageSize:10,
+                    pageSize:6,
                     pageNum:1
                 },
                 collectValue:false,
@@ -99,7 +107,6 @@
                 this.commentAllLy()
             },
             getCollect(){
-                console.log('22121')
                 this.$ajax({
                     method:'post',
                     url:'/comment/like',
@@ -124,7 +131,6 @@
                 })
             },
             getTestDeails(){
-                console.log('this.$route.query.commentId',this.$route.query.commentId,this.$cookies)
                 this.$ajax({
                     method:'get',
                     url:'/comment/one',
@@ -144,18 +150,18 @@
                     params:{
                         commentId:this.$route.query.commentId,
                         userId:this.$cookies.get('userId'),
-                        pageNum: 1,
-                        pageSize: 10
+                        pageNum: this.page.pageNum,
+                        pageSize:this.page.pageSize
                     }
                 }).then(res=>{
-                    this.commentAll=res.res
-                    console.log('this.commentAll',this.commentAll)
+                    this.commentAllList=res.res.list
                     this.page.total = res.res.total
                 })
             },
-            leaveComment(){
-                this.commentModal=true
-            },commentSend(){
+            // leaveComment(){
+            //     this.commentModal=true
+            // },
+            commentSend(){
                 if(this.commentText===''){
                     this.$Notice.error({
                         title: '评论内容不能为空'
@@ -165,17 +171,16 @@
                         method:'post',
                         url:'/comment/add',
                         params:{
-                            commentPid:this.$route.query.bookId,
+                            commentPid:this.$route.query.commentId,
                             userId:this.$cookies.get('userId'),
                             content:this.commentText
-                            // "title": "标题",
                         }
                     }).then(res=>{
                         if(res.code===200){
                             this.$Notice.success({
                                 title: '评论成功'
                             })
-                            this.getTestDeails()
+                            this.commentAllLy()
                         }
                     })
                 }
@@ -258,16 +263,96 @@
     .left-content{
         padding-left:10px ;
         margin:0 20px 20px 0;
+        display: flex;
+        flex-direction: row;
         .detail-content{
             min-height:300px;
-            float:left;
+            // float:left;
             margin-left: 25px;
             position:relative;
+            
+        }
+        .detail-page{
+            width:350px;
+            height: 800px;
+            padding:0 5px;
+            position:relative;
+            overflow:hidden;
+             .comment-box{
+                width: 340px;
+                font-size: 18px;
+                text-align: center;
+                margin: 20px auto;
+            }
+            
+            .comment-send{
+                padding:5px;
+                // vertical-align: top;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+            }
+            .comment-content{
+                padding: 10px;
+                .comment-name{
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: #2e2e2e;
+                    display: inline-block;
+                    vertical-align: top;
+                }
+                .comment-time{
+                    font-size: 12px;
+                    color: #999;
+                    vertical-align: top;
+                    display: inline-block;
+                    margin-left:10px;
+                }
+                .comment-detail{
+                    display: block;
+                    margin-top: 8px;
+                    padding-bottom:10px;
+                    border-bottom: 1px dashed #ddd;
+                }
+            }
+        }
+        .prod_det_box{
+            width:800px;
+            min-height: 260px;
+            // height: 260px;
+            padding:25px 25px 10px 25px;
+            border:1px solid rgb(209, 205, 205);
+            border-radius:10px;
+            font-size: 17px;
+            color: rgb(100, 100, 100);
+            overflow: hidden;
+            .prod_img{
+                margin:10px auto;
+                text-align:center;
+                .book-img{
+                    width: 500px;
+                    // height:260px;
+                    // border: 1px solid #ddd;
+                    object-fit: contain;
+                }
+            }
+            .rate{
+                display:inline-block;
+                width: 50%;
+                span{
+                    margin: 5px 0;
+                    display: inline-block;
+                }
+                .rate-num{
+                    font-size: 50px;
+                    line-height: 60px;
+                }
+            }
+            
             .your-rate{
-                width: 800px;
                 line-height: 50px;
                 height:50px;
-                float: left;
+                float: right;
                 .rate-container{
                     display: inline-block;
                     line-height: 16px;
@@ -288,67 +373,9 @@
                     background-color: #fff;
                     border-color: #F91;
                 }
-                .collect-button{
-                    margin-top: 10px;
-                    float: left;
-                }
-                .your-comment{
-                    float: right;
-                    width: 100px;
-                    height: 25px;
-                    span{
-                        color: #37A;
-                    }
-                    :hover{
-                        cursor:pointer
-                    }
-                }
-            }
-            
-        }
-        .detail-page{
-            // width: 100%;
-            text-align: right;
-            padding-bottom: 10px;
-        }
-        .prod_det_box{
-            width:800px;
-            min-height: 260px;
-            // height: 260px;
-            padding:25px;
-            border:1px solid rgb(209, 205, 205);
-            border-radius:10px;
-            font-size: 17px;
-            color: rgb(100, 100, 100);
-            .prod_img{
-                margin:10px auto;
-                text-align:center;
-                .book-img{
-                    width: 500px;
-                    // height:260px;
-                    // border: 1px solid #ddd;
-                    object-fit: contain;
-                }
-            }
-            // .detail{
-            //     width: 50%;
-            //     display: inline-block;
-            //     span{
-            //         margin: 5px 0;
-            //         display: inline-block;
-            //     }
-            // }
-            .rate{
-                display:inline-block;
-                width: 50%;
-                span{
-                    margin: 5px 0;
-                    display: inline-block;
-                }
-                .rate-num{
-                    font-size: 50px;
-                    line-height: 60px;
-                }
+                // .collect-button{
+                //     margin-top: 10px;
+                // }
             }
         }
     }
