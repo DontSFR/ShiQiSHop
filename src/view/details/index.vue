@@ -36,10 +36,15 @@
                         相关评测
                         <Badge :count="commentsCount" class="demo-badge-alone"></Badge>
                     </MenuItem>
+                    <MenuItem name="3" @click.native="selectMenu(3)">
+                        <Icon type="ios-create" />
+                        发表评测
+                        <Badge :count="commentsCount" class="demo-badge-alone"></Badge>
+                    </MenuItem>
                 </Menu>
                 <div class="content"> 
                     <!-- 简介区域-->
-                    <div class="demo"  v-if="menuTab">
+                    <div class="demo"  v-if="menuTab==1">
                         <Divider orientation="left" class="divider">商品介绍</Divider>
                         <p class="text">
                             {{testDetails.description}}
@@ -51,21 +56,7 @@
                         
                     </div> 
                     <!-- 评论区域-->
-                    <div class="demo" v-else >
-                        <!-- <div class="your-comment" @click="leaveComment">
-                            <Icon type="ios-create-outline" color='#37A' size="24"/>
-                            <span>留下你的评论</span>
-                        </div>    
-                        <Modal 
-                            v-model="commentModal" 
-                            draggable scrollable 
-                            ok-text ="发送" 
-                            title="评论区"
-                            @on-cancel="commentCancel" 
-                            @on-ok="commentSend"
-                        >
-                            <Input v-model="commentText" type="textarea" :autosize="true" placeholder="说点什么吧" />
-                        </Modal> -->
+                    <div class="demo" v-if="menuTab==2">
                         <div class="comment-container" v-for="item in testAllPc">
                             <div style="overflow:hidden;position:relative;">
                                 <div class="user-message">
@@ -88,6 +79,44 @@
                             <Divider style="margin: 15px 0;"/>
                         </div>
                     </div>
+                    <div class="demo" v-if="menuTab==3">
+                        <Form :model="formTest"  :rules="ruleValidate"  ref="formValidateTest" :label-width="80">
+                            <FormItem label="标题" prop="title" >
+                                <Input v-model="formTest.title" placeholder="请输入标题(30字)" :maxlength='30' style="width: 500px" ></Input>
+                            </FormItem>
+                            
+                            <FormItem label="商品图" prop="url" >
+                                <div class="demo-upload-list"  v-if="formTest.url">
+                                    <template>
+                                        <img :src="formTest.url">
+                                        <div class="demo-upload-list-cover">
+                                            <Icon type="ios-trash-outline" @click.native="handleRemove()"></Icon>
+                                        </div>
+                                    </template>
+                                    <template>
+                                        <Progress hide-info></Progress>
+                                    </template>
+                                </div>
+                                <Upload
+                                    v-else
+                                    ref="upload"
+                                    :before-upload="upload_handleUpload"
+                                    type="drag"
+                                    action="//jsonplaceholder.typicode.com/posts/"
+                                    style="display: inline-block;width:58px;">
+                                    <div style="width: 58px;height:58px;line-height: 58px;">
+                                        <Icon type="ios-camera" size="20"></Icon>
+                                    </div>
+                                </Upload>
+                            </FormItem>
+                            <FormItem label="内容" prop="content" >
+                                <Input v-model="formTest.content"  style="width: 1100px"  type="textarea"  :maxlength='1000' :autosize="{minRows: 6,maxRows: 15}" placeholder="说点什么吧...(1000字)"></Input>
+                            </FormItem>
+                        </Form>
+                        <div style="text-align: center;"  >
+                            <Button  style="width:300px;"  long @click="handleSubmitTest('formValidateTest')" type="primary">发表</Button>
+                        </div>
+                    </div>
                 </div> 
             </div>
         </div>
@@ -105,7 +134,21 @@
                     list:[]
                 },
                 testAllPc:[],
-                menuTab:true,
+                menuTab:1,
+                formTest:{
+                    title: "",
+                    content: "",
+                    url:'',
+                },
+                uploadList:[],
+                ruleValidate: {
+                    title: [
+                        { required: true, message: '请输入标题', trigger: 'blur' }
+                    ],
+                    content: [
+                        { required: true, message: '请输入内容', trigger: 'change' }
+                    ],
+                },
                 commentModal:false,
                 commentText:'',
                 collectValue:false,
@@ -140,6 +183,70 @@
             init(){
                 this.getTestDeails()
             },
+            // handleView (name) {
+            //     this.imgName = name;
+            //     this.visible = true;
+            // },
+            handleRemove () {
+                this.formTest.url=''
+            },
+            handleSuccess (res, file) {
+                console.log('res',res,file),
+                file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
+                file.name = '7eb99afb9d5f317c912f08b5212fd69a';
+            },
+            handleFormatError (file) {
+                this.$Notice.warning({
+                    title: 'The file format is incorrect',
+                    desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+                });
+            },
+            handleMaxSize (file) {
+                this.$Notice.warning({
+                    title: 'Exceeding file size limit',
+                    desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+                });
+            },
+            handleBeforeUpload () {
+                const check = this.uploadList.length < 5;
+                if (!check) {
+                    this.$Notice.warning({
+                        title: 'Up to five pictures can be uploaded.'
+                    });
+                }
+            },
+            upload_handleUpload(file){
+                console.log('file',file)
+                // this.imgFile = file;
+                let head_url= window.URL.createObjectURL(file);
+                console.log('head_url',head_url)
+                return;
+            },
+            // 发表评测
+            handleSubmitTest(name){
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        this.$ajax({
+                            method:'post',
+                            url:'/comment/add',
+                            isFormData:true,
+                            data:{
+                                userId:this.$cookies.get('userId'),
+                                commentPid:this.$router.query.commentId,
+                                ...this.formTest
+                            }
+                        }).then(res=>{
+                            if(res.code == 200){
+                                this.$Notice.success({
+                                    title: '发表成功'
+                                })
+                            }
+                        })
+                    } else {
+                        return 
+                    }
+                })
+            },
             getCollect(index){
                 if(index===1){//收藏
                     this.$ajax({
@@ -153,12 +260,12 @@
                         if(res.code===200){
                             this.collectValue=true
                             this.$Notice.success({
-                                title: '收藏成功'
+                                title: '点赞成功'
                             })
                         }else if(res.code===500){
                             if(res.reason==="用户未登录"){
                                 this.$Notice.error({
-                                    title: '收藏失败，用户未登录' 
+                                    title: '点赞失败，用户未登录' 
                                 })
                             }
                         }
@@ -232,7 +339,7 @@
             //     }
             // },
             selectMenu(index){
-                this.menuTab=(index===1)
+                this.menuTab=index
             },
             leaveComment(){
                 this.commentModal=true
@@ -294,6 +401,7 @@
         text-align: center;
     }
     .title {
+        
         color: #734633;
         font-size: 19px;
         height: 30px;
@@ -444,6 +552,8 @@
         .content{
             width: 100%;
             .demo{
+                overflow: hidden;
+                position:relative; 
                 margin:20px 0 ;
                 .your-comment{
                     // float: right;
@@ -508,6 +618,42 @@
                 }
             }
         }
+    }
+     .demo-upload-list{
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        line-height: 60px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+        position: relative;
+        box-shadow: 0 1px 1px rgba(0,0,0,.2);
+        margin-right: 4px;
+    }
+    .demo-upload-list img{
+        width: 100%;
+        height: 100%;
+    }
+    .demo-upload-list-cover{
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,.6);
+    }
+    .demo-upload-list:hover .demo-upload-list-cover{
+        display: block;
+    }
+    .demo-upload-list-cover i{
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 0 2px;
     }
 }
 </style>

@@ -33,14 +33,14 @@
                         <div class="prod_img">
                             <img class="book-img" :src="testDetails.imgUrl"/>
                         </div>
-                        <div style="padding-bottom:10px;">
+                        <div class="test-details" style="padding-bottom:10px;pre-line;">
                             
                             {{this.testDetails.content}}
                         </div>
                         
                         <div class="your-rate">
-                            <Button class="collect-button" v-if="collectValue"  type="warning" shape="circle" @click="getCollect()">已收藏{{testDetails.likeNum}}人</Button>
-                            <Button class="collect-button"   shape="circle"  v-else  @click="getCollect()">收藏</Button>
+                            <Button class="collect-button" v-if="collectValue"  type="warning" shape="circle" @click="getCollect()">已赞{{testDetails.likeNum}}人</Button>
+                            <Button class="collect-button"   shape="circle"  v-else  @click="getCollect()">赞</Button>
                         </div>
                     </div>
                 </div>
@@ -143,6 +143,7 @@
                     this.collectValue = res.res.zan
                 })
             },
+            // 获取评测的留言
             commentAllLy(){
                 this.$ajax({
                     method:'get',
@@ -326,6 +327,9 @@
             font-size: 17px;
             color: rgb(100, 100, 100);
             overflow: hidden;
+            .test-details{
+                white-space:pre-line;
+            }
             .prod_img{
                 margin:10px auto;
                 text-align:center;

@@ -13,7 +13,7 @@
                 </span>
                 <span class="num-content">
                     <p class="num">{{commendNum}}</p>
-                    <p class="title">评论数</p>
+                    <p class="title">评测数</p>
                 </span>
             </div>
         </div>
@@ -27,7 +27,7 @@
                     <Icon type="md-document" />
                     我的评测
                 </MenuItem>
-                <MenuItem name="2" @click.native="selectMenu(3)">
+                <MenuItem name="2" @click.native="selectMenu(2)">
                     <Icon type="ios-create" />
                     修改个人信息
                 </MenuItem>
@@ -35,7 +35,7 @@
             
             <div class="content">
                 <!-- 评论区域-->
-                <div class="demo"  v-if="menuTab">
+                <div class="demo"  v-if="menuTab==1">
                     <div class="feat_prod_box" >
                         <div class="remen" v-for="(item,t) in personalComments">
                             <router-link 
@@ -72,7 +72,7 @@
                 <!-- 修改个人信息-->
                 <div class="demo" v-else>
                      <div class="mudify-msg" >
-                          <Form :model="formItem" ref="formValidate" :label-width="80">
+                        <Form :model="formItem" ref="formValidate" :label-width="80">
                             <FormItem label="用户名" prop="userName" required>
                                 <Input v-model="formItem.userName" placeholder="请输入你的用户名"></Input>
                             </FormItem>
@@ -88,6 +88,9 @@
                             <FormItem label="个性签名"  prop="signature">
                                 <Input v-model="formItem.signature" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入你的个性签名"></Input>
                             </FormItem>
+                            <!-- <FormItem label="文件保存路径"  prop="fileUploadPath" required>
+                               <Input v-model="formItem.fileUploadPath" placeholder="请输入文件保存路径"></Input>
+                            </FormItem> -->
                             <FormItem label="关注内容"   prop="favourite">
                                 <Select multiple v-model="formItem.favourite">
                                     <Option v-for="item in favouriteList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -119,7 +122,7 @@ export default {
             textname:"内容简介",
             catalog:"目录",
             writerIntro:"作者简介",
-            menuTab:true,
+            menuTab:1,
             personalComments:[],
             newbookList:[],
             page:{
@@ -218,6 +221,7 @@ export default {
                 }
             })
         },
+        
         // geCollect(){
         //     this.$ajax({
         //         method:'post',
@@ -273,7 +277,7 @@ export default {
             })
         },
         selectMenu(index){
-            this.menuTab=(index===1)
+            this.menuTab=index
         },
         changePage(num){
             this.page.pageNum=num
