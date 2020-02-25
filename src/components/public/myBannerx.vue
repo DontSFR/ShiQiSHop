@@ -32,7 +32,7 @@
                         最新资讯
                     </router-link>
                 </MenuItem>
-                <MenuItem name="center">
+                <MenuItem name="center" v-show="ifLogin">
                     <router-link to='/center' class="a-link personer">
                         会员中心
                     </router-link>

@@ -51,7 +51,7 @@
                             ...相关留言...
                         </div>
                         <div class="comment-send">
-                            <Input v-model="commentText" maxlength="500" show-word-limit type="textarea" placeholder="说点什么吧..." style="width: 270px" />
+                            <Input v-model="commentText" :maxlength="500" show-word-limit type="textarea" placeholder="说点什么吧..." style="width: 270px" />
                             <Button type="primary" @click="commentSend">发送</Button>
                         </div>
                         <div v-for="item in commentAllList" class="comment-content">
@@ -107,6 +107,12 @@
                 this.commentAllLy()
             },
             getCollect(){
+                if(!this.$cookies.get('userId')){
+                    this.$Notice.error({
+                        title: '请先登陆用户'
+                    })
+                    return 
+                }
                 this.$ajax({
                     method:'post',
                     url:'/comment/like',
@@ -131,6 +137,7 @@
                 })
             },
             getTestDeails(){
+                
                 this.$ajax({
                     method:'get',
                     url:'/comment/one',
@@ -163,6 +170,12 @@
             //     this.commentModal=true
             // },
             commentSend(){
+                if(!this.$cookies.get('userId')){
+                    this.$Notice.error({
+                        title: '请先登陆用户'
+                    })
+                    return 
+                }
                 if(this.commentText===''){
                     this.$Notice.error({
                         title: '评论内容不能为空'

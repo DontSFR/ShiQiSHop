@@ -11,7 +11,7 @@ module.exports = {
     proxyTable: {
       '*': {
         // target: 'http://10.62.170.88:7777/', //', //目标接口域名
-        target: 'http://ad2c9q.natappfree.cc', //', //目标接口域名
+        target: 'http://66axtc.natappfree.cc/', //', //目标接口域名
         changeOrigin: true, //是否跨域
       }
     },

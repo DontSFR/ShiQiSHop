@@ -4,7 +4,9 @@
             <div class="container-login" >
                 <div class="wrap-login">
                     <div class="login-form">
-                        <span class="title">注册</span>
+                        <div  class="title" style="margin-bottom: 25px;">拾柒美妆
+                            <span style="margin-bottom: 25px;color:#999;font-size: 20px;">注册</span>
+                        </div>
                         <div class="wrap-input" data-validate="请输入用户名">
                             <span class="label-input">用户名</span>
                             <input class="input" type="text" v-model="form.userName" placeholder="请输入用户名" autocomplete="off">
@@ -94,23 +96,19 @@ export default {
 </script>
 <style lang="less" scoped>
     .container-login{
-        width: 100%;
         margin: 0 auto;
-        padding:15% 2%;
-        display: flex;
-        background: url('../assets/header/bg-01.jpg') no-repeat center;
-        -moz-background-size:100% 100%; 
-        background-size:100% 100%;
-        overflow: hidden;
+        background-color: #6c7581;
+        position: absolute;
+        width: 100%;
+        height: 100%;
         .wrap-login{
             width: 500px;
+            margin: 0 auto;
             background: #fff;
             border-radius: 10px;
-            vertical-align: middle;
+            margin-top:50px;
             overflow: hidden;
-            margin: 0 auto;
-            height: 70%;
-            // margin:45px 55px;
+            height: 600px;
             .login-form{
                 margin: 45px 55px;
                 .title{

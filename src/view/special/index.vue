@@ -146,12 +146,16 @@
                     // font-size: 14px;
                 }
                 .brand{
-                    line-height: 70px;
+                    line-height: 60px;
                     font-weight: bold;
                     font-size: 22px;
+                    width: 100%;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;   //只展示5行
+                    -webkit-box-orient: vertical;
                 }
                 .name{
-                    line-height: 70px;
+                    line-height: 40px;
                     width: 100%;
                     overflow: hidden;
                     display: -webkit-box;
@@ -171,7 +175,6 @@
                 .grade-num{
                     color:#f5a623;
                     font-size: 14px;
-                    line-height: 50px;
                 }
             }
             .intro{

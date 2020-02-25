@@ -18,7 +18,7 @@
                                 <span  class="good-price" >￥{{testDetails.price}}</span>
                                 <span class="good-requirement">{{testDetails.requirement}}</span>
                             </div>
-                            <a :href="testDetails.taoBaoUrl" class="good-buy">
+                            <a :href="testDetails.taoBaoUrl" class="good-buy" target="_blank">
                                 <h2 style="color:#fff;">立即购买>>></h2>
                             </a>
                         </div>
@@ -86,25 +86,21 @@
                             </FormItem>
                             
                             <FormItem label="商品图" prop="url" >
-                                <div class="demo-upload-list"  v-if="formTest.url">
-                                    <template>
-                                        <img :src="formTest.url">
-                                        <div class="demo-upload-list-cover">
-                                            <Icon type="ios-trash-outline" @click.native="handleRemove()"></Icon>
-                                        </div>
-                                    </template>
-                                    <template>
-                                        <Progress hide-info></Progress>
-                                    </template>
+                                <div class="demo-upload-list"  v-if="formTest.imgUrl">
+                                    <img :src="imgUrl" style="width:200px;height:200px;">
+                                    <div class="demo-upload-list-cover">
+                                        <Icon type="ios-trash-outline" @click.native="handleRemove()"></Icon>
+                                    </div>
                                 </div>
                                 <Upload
                                     v-else
                                     ref="upload"
+                                    :on-success="handleSuccess"
                                     :before-upload="upload_handleUpload"
                                     type="drag"
-                                    action="//jsonplaceholder.typicode.com/posts/"
-                                    style="display: inline-block;width:58px;">
-                                    <div style="width: 58px;height:58px;line-height: 58px;">
+                                    action="/upload"
+                                    style="display: inline-block;width:200px;">
+                                    <div style="width: 200px;height:200px;line-height: 200px;">
                                         <Icon type="ios-camera" size="20"></Icon>
                                     </div>
                                 </Upload>
@@ -113,6 +109,11 @@
                                 <Input v-model="formTest.content"  style="width: 1100px"  type="textarea"  :maxlength='1000' :autosize="{minRows: 6,maxRows: 15}" placeholder="说点什么吧...(1000字)"></Input>
                             </FormItem>
                         </Form>
+                        
+                                <!-- <form method="post" enctype="multipart/form-data">
+                                    <input type="file" name="file">
+                                    <input type="submit" value="上传">
+                                </form> -->
                         <div style="text-align: center;"  >
                             <Button  style="width:300px;"  long @click="handleSubmitTest('formValidateTest')" type="primary">发表</Button>
                         </div>
@@ -138,8 +139,9 @@
                 formTest:{
                     title: "",
                     content: "",
-                    url:'',
+                    imgUrl:'',
                 },
+                imgUrl:'',
                 uploadList:[],
                 ruleValidate: {
                     title: [
@@ -183,62 +185,60 @@
             init(){
                 this.getTestDeails()
             },
-            // handleView (name) {
-            //     this.imgName = name;
-            //     this.visible = true;
-            // },
             handleRemove () {
-                this.formTest.url=''
+                this.formTest.imgUrl=''
+                this.imgUrl = ''
             },
             handleSuccess (res, file) {
-                console.log('res',res,file),
-                file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-                file.name = '7eb99afb9d5f317c912f08b5212fd69a';
-            },
-            handleFormatError (file) {
-                this.$Notice.warning({
-                    title: 'The file format is incorrect',
-                    desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
-                });
-            },
-            handleMaxSize (file) {
-                this.$Notice.warning({
-                    title: 'Exceeding file size limit',
-                    desc: 'File  ' + file.name + ' is too large, no more than 2M.'
-                });
-            },
-            handleBeforeUpload () {
-                const check = this.uploadList.length < 5;
-                if (!check) {
-                    this.$Notice.warning({
-                        title: 'Up to five pictures can be uploaded.'
-                    });
-                }
+                this.formTest.imgUrl = res.res
             },
             upload_handleUpload(file){
-                console.log('file',file)
-                // this.imgFile = file;
-                let head_url= window.URL.createObjectURL(file);
-                console.log('head_url',head_url)
-                return;
+                window.URL = window.URL || window.webkitURL;
+                var url = window.URL.createObjectURL
+                if (window.createObjectURL!=undefined) { // basic
+                    url = window.createObjectURL(file) ;
+                } else if (window.URL!=undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file) ;
+                } else if (window.webkitURL!=undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file) ;
+                }
+                this.imgUrl = url
             },
+            
             // 发表评测
             handleSubmitTest(name){
+                console.log('rrrrr')
+                if(!this.$cookies.get('userId')){
+                    this.$Notice.error({
+                        title: '请先登陆用户'
+                    })
+                    return 
+                }
                 this.$refs[name].validate((valid) => {
                     if (valid) {
+                        console.log('6666',this.$cookies.get('userId'),this.testDetails.goodsId,this.formTest)
                         this.$ajax({
                             method:'post',
                             url:'/comment/add',
-                            isFormData:true,
-                            data:{
+                            params:{
+                                commentPid:0,
                                 userId:this.$cookies.get('userId'),
-                                commentPid:this.$router.query.commentId,
+                                goodsId:this.testDetails.goodsId,
                                 ...this.formTest
                             }
                         }).then(res=>{
                             if(res.code == 200){
                                 this.$Notice.success({
                                     title: '发表成功'
+                                })
+                                this.formTest = {
+                                    title: "",
+                                    content: "",
+                                    imgUrl:'',
+                                }
+                            }else if(res.code===500){
+                                this.$Notice.error({
+                                    title: '发表失败'
                                 })
                             }
                         })
@@ -292,7 +292,6 @@
                 }
             },
             getTestDeails(){
-                console.log('this.$route.query.commentId',this.$route.query.goodsId)
                 this.$ajax({
                     method:'get',
                     url:'/goods/detail',
@@ -302,6 +301,7 @@
                 }).then(res=>{
                     this.testDetails=res.res
                 })
+
                 this.$ajax({
                     method:'get',
                     url:'/comment/allPc',
@@ -311,35 +311,12 @@
                 }).then(res=>{
                     this.testAllPc=res.res.list
                 })
-                // /allPc?goodsId=?
             },
-            // changeRate(){
-            //     if(this.$cookies.get('userId')){
-            //         this.rateDisabled=false
-            //         this.$ajax({
-            //             method:'post',
-            //             url:'/applyComment',
-            //             params:{
-            //                 bookId:this.$route.query.bookId,
-            //                 userId:this.$cookies.get('userId'),
-            //                 grade:(this.yourRateValue*2)
-            //             }
-            //         }).then(res=>{
-            //                 if(res.code===200){
-            //                     this.$Notice.success({
-            //                         title: '评价成功'
-            //                     })
-            //                     this.getTestDeails()
-            //                 }
-            //             })
-            //     }else{
-            //         this.$Notice.error({
-            //             title: '评价失败，用户未登录'
-            //         })
-            //     }
-            // },
             selectMenu(index){
                 this.menuTab=index
+                if(index==2){
+                    this.getTestDeails()
+                }
             },
             leaveComment(){
                 this.commentModal=true
@@ -621,10 +598,10 @@
     }
      .demo-upload-list{
         display: inline-block;
-        width: 60px;
-        height: 60px;
+        width: 200px;
+        height: 200px;
         text-align: center;
-        line-height: 60px;
+        line-height: 200px;
         border: 1px solid transparent;
         border-radius: 4px;
         overflow: hidden;

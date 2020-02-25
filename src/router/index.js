@@ -10,9 +10,9 @@ const routes =  [
     component: index,
     children: [
       {
-        path: 'index',
-        name:'index',
-        component: r => require.ensure([], () => r(require('../view/index/index.vue')), 'index')
+        path: 'home',
+        name:'home',
+        component: r => require.ensure([], () => r(require('../view/home/index.vue')), 'index')
       },
       {
         path:'skincare',
@@ -38,11 +38,6 @@ const routes =  [
         path:'search',
         name:'search',
         component: r => require.ensure([], () => r(require('../view/searchGood/index.vue')), 'search')
-      },
-      {
-        path:'category',
-        name:'category',
-        component: r => require.ensure([], () => r(require('../view/category/index.vue')), 'category')
       },
       {
         path:'center',

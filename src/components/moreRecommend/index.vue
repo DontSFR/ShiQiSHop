@@ -16,19 +16,6 @@
                 <div class="detail">
                     <span class="text brand">{{item.brand}}</span>
                     <br>
-                        
-            <!-- // brand: "欧莱雅"
-            // description: "兼具唇釉的浓郁亮泽与唇膏的舒适易用，显色、滋润不黏腻。"
-            // goodsId: "testGoods"
-            // goodsName: "小仙贝唇膏"
-            // img: "https://www.lorealparis.com.cn/Product/Detail/1231.loreal"
-            // introduce: "高级贝壳外壳 细腻闪耀唇色 一抹仙气贝出"
-            // price: 145
-            // requirement: "唇"
-            // set: "XXB-001"
-            // taoBaoUrl: "https://detail.tmall.com/item.htm?spm=a1z10.1-b-s.w5003-21588119984.1.6a5f3654AuddrV&id=563367801510&skuId=4024837316337&scene=taobao_shop"
-            // type: "彩妆"
-            // usage: "适量转出1-2mm膏体，均匀涂抹于唇部。" -->
                     <span class="text name">{{item.goodsName}}</span>
                     <br>
                     <span  class="text description">{{item.introduce}}</span>
@@ -159,12 +146,16 @@ export default {
                     // font-size: 14px;
                 }
                 .brand{
-                    line-height: 70px;
+                    line-height: 60px;
                     font-weight: bold;
                     font-size: 22px;
+                    width: 100%;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;   //只展示5行
+                    -webkit-box-orient: vertical;
                 }
                 .name{
-                    line-height: 70px;
+                    line-height: 40px;
                     width: 100%;
                     overflow: hidden;
                     display: -webkit-box;
@@ -184,7 +175,6 @@ export default {
                 .grade-num{
                     color:#f5a623;
                     font-size: 14px;
-                    line-height: 50px;
                 }
             }
             .intro{
