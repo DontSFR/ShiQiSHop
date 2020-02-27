@@ -51,7 +51,7 @@
                         </p>
                         <Divider orientation="left" class="divider">使用方法</Divider>
                         <p class="text">
-                            {{testDetails.usage}}
+                            {{testDetails.usaging}}
                         </p>
                         
                     </div> 
@@ -548,6 +548,7 @@
                     color: #1f8566;
                 }
                 .text{
+                    white-space:pre-line;
                     width: 90%;
                     margin:0 auto;
                 }

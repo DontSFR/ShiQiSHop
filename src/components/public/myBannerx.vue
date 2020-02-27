@@ -1,7 +1,7 @@
 <template>
     <div class="menu"  :class="{'fixed':isfix}">
         <div class="menuList">
-            <Menu class="selected" ref="side_menu" mode="horizontal" :active-name="activeName">
+            <Menu @on-select="selectActiveName" class="selected" ref="side_menu" mode="horizontal" :active-name="activeName">
                 <MenuItem name="index">
                     <router-link to='/index' class="a-link">
                         首页
@@ -32,7 +32,7 @@
                         最新资讯
                     </router-link>
                 </MenuItem>
-                <MenuItem name="center" v-show="ifLogin">
+                <MenuItem name="center" v-if="ifLogin">
                     <router-link to='/center' class="a-link personer">
                         会员中心
                     </router-link>
@@ -105,6 +105,9 @@ export default {
         window.addEventListener('scroll', this.handleScroll)
     },
     methods: {
+        selectActiveName(e){
+            // console.log('eeee',e)
+        },
         init () {
             this.ifLogin=(this.$cookies.get('userId')!==null)
             this.menuList.forEach(t => {

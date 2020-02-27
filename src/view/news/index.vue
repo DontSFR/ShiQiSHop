@@ -8,14 +8,14 @@
                 <div class="feat_prod_box" >
                     <div class="prod_det_box" v-for="(item,t) in newsList">
                         <div class="prod_img">
-                            <img :src="item.imgUrl">
+                            <router-link :to="{name:'testDetails',query:{commentId:item.commentId}}" >
+                                <img :src="item.imgUrl">
+                            <!-- <span  >- 更多详情 -</span>  -->
+                            </router-link>
                         </div>
                         <div class="prod_title">{{item.title}}</div>
                         <p class="details">{{item.content}}</p>
                         <p class="user-name">——{{item.userName}}</p>
-                        <router-link class="more" :to="{name:'testDetails',query:{commentId:item.commentId}}" >
-                            <span  >- 更多详情 -</span> 
-                        </router-link>
                         <div class="clear"></div>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
         .user-name{
             display: inline-block;
             position:absolute;
-            bottom: 40px;
+            bottom: 20px;
             right: 10px;
             height:20px;
             font-style:italic;

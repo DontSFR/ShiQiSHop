@@ -150,10 +150,6 @@ export default {
                 {
                     value: '香水',
                     label: '香水'
-                },
-                {
-                    value: '评测',
-                    label: '评测'
                 }
             ]
         }

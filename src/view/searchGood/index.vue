@@ -10,9 +10,10 @@
                     <router-link 
                         :to="{name:'details',query:{goodsId:item.goodsId}}"
                     >
-                        <span class="book-name">{{item.goodsName}}</span>
+                        <div class="book-name">{{item.goodsName}}</div>
                         <div class="new_prod_bg">
                             <img :src="item.img"alt="" title="" class="thumb" border="0" />
+                            <div style="#f5a623" class="book-name">{{item.brand}}</div>
                         </div>
                     </router-link>       
                 </div>
@@ -43,20 +44,7 @@ export default {
                 pageNum: 1
             },
             shopList:[
-                {name:'爱生命',content:'爱你就想爱生命',price:'34',src:'~@/assets/newbook/1.jpg'},
-                {name:'Storm',content:'暴风雨中的孩子',price:'46',src:'~@/assets/newbook/3.jpg'},
-                {name:'ASKME',content:'儿童百科百问百答',price:'65',src:'~@/assets/newbook/2.jpg'},
-                {name:'松子',content:'被嫌弃的松子的一生',price:'32',src:'~@/assets/newbook/4.jpg'},
-                {name:'坚强',content:'不慌不忙的坚强',price:'26',src:'`@/assets/newbook/5.jpg'},
-                {name:'松子',content:'被嫌弃的松子的一生',price:'32',src:'~@/assets/newbook/4.jpg'},
-                {name:'爱生命',content:'爱你就想爱生命',price:'34',src:'~@/assets/newbook/1.jpg'},
-                {name:'Storm',content:'暴风雨中的孩子',price:'46',src:'~@/assets/newbook/3.jpg'},
-                {name:'ASKME',content:'儿童百科百问百答',price:'65',src:'~@/assets/newbook/2.jpg'},
-                {name:'松子',content:'被嫌弃的松子的一生',price:'32',src:'~@/assets/newbook/4.jpg'},
-                {name:'坚强',content:'不慌不忙的坚强',price:'26',src:'`@/assets/newbook/5.jpg'},
-                {name:'松子',content:'被嫌弃的松子的一生',price:'32',src:'~@/assets/newbook/4.jpg'},
-                {name:'爱生命',content:'爱你就想爱生命',price:'34',src:'~@/assets/newbook/1.jpg'},
-                {name:'Storm',content:'暴风雨中的孩子',price:'46',src:'~@/assets/newbook/3.jpg'}
+                {name:''},
             ]
         }
     },
@@ -78,7 +66,6 @@ export default {
             this.getCategoryList()
         },
         getCategoryList(){
-            console.log('this.$route.query.keyword',this.$route.query.keyword)
             this.$ajax({
                 method:"get",
                 url:"/goods/search",
@@ -88,7 +75,6 @@ export default {
             }).then(res=>{
                 this.page.total=res.res.total
                 this.shopList=res.res.list
-                console.log('res', this.shopList)
             })
         },
         changePage(num){
@@ -146,13 +132,16 @@ export default {
             text-align:center;
             padding:0 10px;
             .book-name{
-                padding:5px 0 5px 0;
-                color:#b5b5b6;
-                text-decoration:none;
-                display: inline-block;
+                // padding:5px 0 5px 0;
+                // color:#b5b5b6;
+                // text-decoration:none;
+                // display: inline-block;
                 width: 150px;
-                height: 26px;
+                margin: 0 auto;
+                font-size:16px;
                 overflow: hidden;
+                white-space: nowrap;
+                text-overflow:ellipsis;
             }
             .new_prod_bg{
                 width:188px;

@@ -72,7 +72,6 @@ export default {
                 }
             }).then(res=>{
                 this.bookList=res.res.list
-                this.bookList.push(res.res.list[0])
                 this.page.total=res.res.total
             })
         },

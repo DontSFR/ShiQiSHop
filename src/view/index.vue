@@ -3,7 +3,6 @@
         <my-header></my-header><!--头-->
         <my-bannerx></my-bannerx><!--搜索-->
         <router-view></router-view>
-        <!-- <right-content></right-content> -->
         <my-footer></my-footer><!--搜索-->
     </div>
 </template>

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import index from '@/view/index'
+import index from '@/view/index.vue'
 Vue.use(Router)
 
 const routes =  [
@@ -8,11 +8,12 @@ const routes =  [
     path: '/',
     name: '主界面',
     component: index,
+    redirect:'/index', 
     children: [
       {
-        path: 'home',
-        name:'home',
-        component: r => require.ensure([], () => r(require('../view/home/index.vue')), 'index')
+        path: 'index',
+        name:'index',
+        component: r => require.ensure([], () => r(require('../view/index/index.vue')), 'index')
       },
       {
         path:'skincare',
