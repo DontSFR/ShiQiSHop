@@ -81,7 +81,7 @@
 .main-content{
     width:@win-width-xmin;
     margin: 0 auto;
-    min-height: 1251px;
+    min-height: 770px;
     background-size:100% 100%;
     
 }
